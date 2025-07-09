@@ -1,0 +1,32 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: payment-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sagaPaymentDb
+    username: postgres
+    password: 1
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+kafka:
+  address: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+  group-id: payment-service-group
+  topic:
+    orderCreated: order-created
+    paymentCompleted: payment-completed
+    paymentFailed: payment-failed
+    paymentRequested: payment-requested
+  properties:
+    spring.json.trusted-packages: '*'
