@@ -20,13 +20,21 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-kafka:
-  address: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
-  group-id: payment-service-group
-  topic:
-    orderCreated: order-created
-    paymentCompleted: payment-completed
-    paymentFailed: payment-failed
-    paymentRequested: payment-requested
-  properties:
-    spring.json.trusted-packages: '*'
+  kafka:
+    address: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+    group-id: payment-service-group
+    topic:
+      orderCreated: order-created
+      paymentCompleted: payment-completed
+      paymentFailed: payment-failed
+      paymentRequested: payment-requested
+      refundPayment: refund-payment
+    consumer:
+      enable-auto-commit: false
+      auto-offset-reset: earliest # ilk çalıştırmada en eski mesajdan başla
+      properties:
+        max.poll.records: 5
+        spring.json.trusted-packages: '*'
+
+    listener:
+      ack-mode: manual
